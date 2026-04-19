@@ -1,0 +1,191 @@
+.vinyl-wrapper{
+width:340px;
+font-size:18px;
+padding:16px 18px;
+
+background:rgba(255,255,255,0.06);
+backdrop-filter:blur(10px);
+-webkit-backdrop-filter:blur(10px);
+
+border-radius:12px;
+border:1px solid rgba(255,255,255,0.08);
+
+box-shadow:0 6px 20px rgba(0,0,0,0.35);
+}
+
+/* HEADER */
+
+.vinyl-header{
+font-size:22px;
+font-weight:600;
+letter-spacing:2px;
+margin-bottom:16px;
+
+display:flex;
+align-items:center;
+gap:8px;
+
+border-bottom:1px solid rgba(255,255,255,0.12);
+padding-bottom:10px;
+}
+
+.vinyl-header::before{
+content:"💿";
+font-size:20px;
+opacity:0.85;
+}
+
+/* SECTIONS */
+
+.vinyl-section{
+margin-bottom:16px;
+padding-bottom:14px;
+
+border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.vinyl-section:last-child{
+border-bottom:none;
+margin-bottom:0;
+padding-bottom:0;
+}
+
+.vinyl-label{
+font-size:14px;
+letter-spacing:1px;
+color:#aaa;
+margin-bottom:8px;
+}
+
+/* ALBUM ROWS */
+
+.vinyl-row{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.vinyl-cover{
+width:52px;
+height:52px;
+border-radius:6px;
+object-fit:cover;
+
+box-shadow:0 4px 10px rgba(0,0,0,0.35);
+}
+
+.vinyl-text{
+display:flex;
+flex-direction:column;
+line-height:1.35;
+}
+
+.vinyl-artist{
+font-weight:600;
+font-size:18px;
+}
+
+.vinyl-album{
+font-size:16px;
+color:#bbb;
+}
+
+/* TOP ARTISTS */
+
+.artist-row{
+display:flex;
+align-items:center;
+gap:8px;
+margin-bottom:8px;
+}
+
+.artist-name{
+width:140px;
+font-size:16px;
+
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+}
+
+.artist-bar{
+flex:1;
+height:8px;
+
+background:rgba(255,255,255,0.08);
+border-radius:4px;
+}
+
+.artist-fill{
+height:100%;
+
+background:linear-gradient(
+90deg,
+#66c0ff,
+#4da3e2
+);
+
+border-radius:4px;
+}
+
+.artist-count{
+width:28px;
+text-align:right;
+font-size:15px;
+color:#bbb;
+}
+
+/* STATISTIK */
+
+.vinyl-stats{
+margin-top:8px;
+font-size:16px;
+}
+
+.vinyl-stats div{
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+padding:10px 0;
+
+border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.vinyl-stats div:last-child{
+border-bottom:none;
+}
+
+.vinyl-stats span{
+color:#e5e5e5;
+font-weight:500;
+margin-left:40px;
+}
+
+/* SENAST TILLAGD */
+
+.latest-row{
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+padding:10px 0;
+
+border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.latest-album{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.latest-cover{
+width:38px;
+height:38px;
+
+border-radius:5px;
+object-fit:cover;
+
+box-shadow:0 3px 8px rgba(0,0,0,0.35);
+}
