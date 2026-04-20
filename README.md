@@ -31,8 +31,6 @@ A **MagicMirror² module** that displays your Discogs vinyl collection in a clea
 ```bash
 cd ~/MagicMirror/modules
 git clone https://github.com/dentrass/MMM-VinylCollection.git
-cd MMM-VinylCollection
-npm install
 ```
 
 ---
@@ -68,12 +66,6 @@ Add this to your `config.js`:
 
 * No external dependencies (uses native fetch)
 
-Installed automatically via:
-
-```bash
-npm install
-```
-
 ---
 
 ## 🧠 How it works
@@ -105,7 +97,6 @@ You can override styles in your `custom.css` if needed.
 ```bash
 cd ~/MagicMirror/modules/MMM-VinylCollection
 git pull
-npm install
 ```
 
 ---
