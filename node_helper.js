@@ -1,7 +1,14 @@
 const NodeHelper = require("node_helper");
-const axios = require("axios");
 
 module.exports = NodeHelper.create({
+
+  start() {
+    this.cache = null;
+    this.lastFetch = 0;
+
+    // 6 timmar cache (kan justeras)
+    this.cacheDuration = 1000 * 60 * 60 * 6;
+  },
 
   socketNotificationReceived(notification, payload) {
     if (notification === "GET_COLLECTION") {
@@ -10,6 +17,17 @@ module.exports = NodeHelper.create({
   },
 
   async getCollection(payload) {
+
+    const now = Date.now();
+
+    // ✅ Använd cache om den är giltig
+    if (this.cache && (now - this.lastFetch < this.cacheDuration)) {
+      console.log("VinylCollection: använder cache");
+      this.sendSocketNotification("COLLECTION_RESULT", this.cache);
+      return;
+    }
+
+    console.log("VinylCollection: hämtar från Discogs API");
 
     try {
 
@@ -25,10 +43,16 @@ module.exports = NodeHelper.create({
 
         const url = `https://api.discogs.com/users/${payload.username}/collection/folders/0/releases?page=${page}&per_page=100&token=${payload.token}`;
 
-        const res = await axios.get(url, { headers });
+        const res = await fetch(url, { headers });
 
-        releases = releases.concat(res.data.releases || []);
-        pages = res.data.pagination?.pages || 1;
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+
+        const data = await res.json();
+
+        releases = releases.concat(data.releases || []);
+        pages = data.pagination?.pages || 1;
         page++;
 
       } while (page <= pages);
@@ -109,28 +133,38 @@ module.exports = NodeHelper.create({
         : null;
 
 
-      const stats = {
-        total: collection.length,
-        artists: Object.keys(artists).length,
-        oldest: oldest === 3000 ? "-" : oldest,
-        newest: newest === 0 ? "-" : newest,
-        topArtists,
-        topGenre,
-        latest,
-        boughtThisYear
-      };
-
-
-      this.sendSocketNotification("COLLECTION_RESULT", {
+      const result = {
         collection,
-        stats,
+        stats: {
+          total: collection.length,
+          artists: Object.keys(artists).length,
+          oldest: oldest === 3000 ? "-" : oldest,
+          newest: newest === 0 ? "-" : newest,
+          topArtists,
+          topGenre,
+          latest,
+          boughtThisYear
+        },
         randomAlbum,
         todayAlbum
-      });
+      };
+
+      // ✅ Spara cache
+      this.cache = result;
+      this.lastFetch = now;
+
+      this.sendSocketNotification("COLLECTION_RESULT", result);
 
     } catch (err) {
 
       console.log("Discogs error:", err.message);
+
+      // ⚠️ Om fel → använd gammal cache om den finns
+      if (this.cache) {
+        console.log("VinylCollection: använder gammal cache pga fel");
+        this.sendSocketNotification("COLLECTION_RESULT", this.cache);
+        return;
+      }
 
       this.sendSocketNotification("COLLECTION_RESULT", {
         collection: [],
