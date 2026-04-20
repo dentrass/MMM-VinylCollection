@@ -66,7 +66,7 @@ Add this to your `config.js`:
 
 ## 📦 Dependencies
 
-* axios
+* No external dependencies (uses native fetch)
 
 Installed automatically via:
 
