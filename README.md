@@ -1,43 +1,47 @@
-# 💿 MMM-VinylCollection
+# MMM-VinylCollection
 
-![MagicMirror](https://img.shields.io/badge/MagicMirror²-Module-blue)
-![Version](https://img.shields.io/badge/version-1.0.0-green)
-![License](https://img.shields.io/badge/license-MIT-lightgrey)
-![Maintenance](https://img.shields.io/badge/maintained-yes-brightgreen)
-
-A **MagicMirror² module** that displays your Discogs vinyl collection in a clean and modern UI.
+MagicMirror² module that displays your Discogs vinyl collection with beautiful stats, random album, and today's pick.
 
 ---
 
 ## ✨ Features
 
-* 📀 **Today's Vinyl** – automatic daily pick
-* 🎲 **Random Album** – rotates automatically
-* 🆕 **Latest Added Record**
-* 🎤 **Top Artists** with visual bars
-* 📊 **Collection Statistics**
-* 🎨 Clean glass-style design
+* 📀 Today's vinyl
+* 🎲 Random album
+* 🆕 Latest added
+* 📊 Statistics overview
+* 🎤 Top artists with visual bars
+* 🌍 Multi-language support
+* ⚙️ Per-module language override (NEW)
 
 ---
 
-## 📸 Preview
+## 🌍 Language Support
 
-<img width="357" height="889" alt="screenshot" src="https://github.com/user-attachments/assets/9f67d3db-09b8-4300-b799-9a2302f7d736" />
+This module supports multiple languages using MagicMirror's built-in language system.
+
+### Supported languages:
+
+* 🇸🇪 Swedish
+* 🇬🇧 English
 
 ---
 
-## 🚀 Installation
+### 🧭 Option 1: Use MagicMirror global language
 
-```bash
-cd ~/MagicMirror/modules
-git clone https://github.com/dentrass/MMM-VinylCollection.git
+Set language in your main `config.js`:
+
+```javascript
+language: "sv" // or "en"
 ```
 
+The module will automatically follow this setting.
+
 ---
 
-## ⚙️ Configuration
+### ⚙️ Option 2: Override language per module (NEW)
 
-Add this to your `config.js`:
+You can force a specific language **only for this module**:
 
 ```javascript
 {
@@ -46,19 +50,85 @@ Add this to your `config.js`:
   config: {
     username: "YOUR_DISCOGS_USERNAME",
     token: "YOUR_DISCOGS_TOKEN",
-    updateInterval: 43200000,
-    randomAlbumInterval: 900000
+    language: "en" // 🔥 overrides global language
+  }
+}
+```
+
+If not set, the module falls back to MagicMirror’s global language.
+
+---
+
+## 📦 Installation
+
+```bash
+cd ~/MagicMirror/modules
+git clone https://github.com/dentrass/MMM-VinylCollection.git
+cd MMM-VinylCollection
+npm install
+```
+
+---
+
+## ⚙️ Configuration
+
+Basic setup:
+
+```javascript
+{
+  module: "MMM-VinylCollection",
+  position: "top_right",
+  config: {
+    username: "YOUR_DISCOGS_USERNAME",
+    token: "YOUR_DISCOGS_TOKEN"
   }
 }
 ```
 
 ---
 
-## 🔑 Discogs API Token
+## 🔄 Update Intervals (optional)
+
+```javascript
+config: {
+  username: "YOUR_USERNAME",
+  token: "YOUR_TOKEN",
+  updateInterval: 43200000,      // 12 hours
+  randomAlbumInterval: 900000    // 15 minutes
+}
+```
+
+---
+
+## 🔑 Get Discogs Token
 
 1. Go to: https://www.discogs.com/settings/developers
-2. Generate a token
+2. Generate a personal access token
 3. Paste it into your config
+
+---
+
+## 📁 File Structure
+
+```
+MMM-VinylCollection/
+├── MMM-VinylCollection.js
+├── node_helper.js
+├── vinyl.css
+├── translations/
+│   ├── en.json
+│   └── sv.json
+├── package.json
+└── README.md
+```
+
+---
+
+## ⚡ Performance
+
+* Uses caching (6 hours) to minimize API calls
+* Fetches full collection only when needed
+* Smooth UI updates
 
 ---
 
@@ -68,63 +138,31 @@ Add this to your `config.js`:
 
 ---
 
-## 🧠 How it works
+## 🧠 Data Source
 
-* Fetches your Discogs collection via API
-* Calculates:
-
-  * Top artists
-  * Genres
-  * Stats
-* Displays dynamic content in the module
+Powered by the Discogs API:
+https://www.discogs.com/developers
 
 ---
 
-## 🎨 Styling
-
-Custom styling is included via:
-
-```
-vinyl.css
-```
-
-You can override styles in your `custom.css` if needed.
-
----
-
-## 🔄 Update
-
-```bash
-cd ~/MagicMirror/modules/MMM-VinylCollection
-git pull
-```
-
----
-
-## 🤝 Contributing
-
-Pull requests are welcome!
-Feel free to suggest improvements or features.
-
----
-
-## 📄 License
-
-MIT License
-
----
-
-## 👤 Author
+## 👨‍💻 Author
 
 **dentrass**
 
 ---
 
-## ⭐ Support
+## ⭐ Contribute
 
-If you like this module:
+Feel free to:
 
-👉 Star the repo
-👉 Share it with other MagicMirror users
+* Add more languages 🌐
+* Improve UI 🎨
+* Suggest features 💡
+
+Pull requests are welcome!
 
 ---
+
+## 📜 License
+
+MIT License
