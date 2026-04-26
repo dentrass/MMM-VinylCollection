@@ -4,7 +4,15 @@ Module.register("MMM-VinylCollection", {
     username: "",
     token: "",
     updateInterval: 43200000,
-    randomAlbumInterval: 900000
+    randomAlbumInterval: 900000,
+    language: null // 🔥 override språk
+  },
+
+  getTranslations() {
+    return {
+      en: "translations/en.json",
+      sv: "translations/sv.json"
+    };
   },
 
   start() {
@@ -14,7 +22,11 @@ Module.register("MMM-VinylCollection", {
     this.randomAlbum = null;
     this.todayAlbum = null;
 
-    this.getData();
+    this.translationsData = {};
+
+    this.loadTranslations(() => {
+      this.getData();
+    });
 
     setInterval(() => {
       this.getData();
@@ -23,6 +35,51 @@ Module.register("MMM-VinylCollection", {
     setInterval(() => {
       this.updateRandomAlbum();
     }, this.config.randomAlbumInterval);
+
+  },
+
+  // 🔥 Ladda språkfiler manuellt
+  loadTranslations(callback) {
+
+    const files = this.getTranslations();
+    const languages = Object.keys(files);
+    let loaded = 0;
+
+    languages.forEach(lang => {
+      fetch(this.file(files[lang]))
+        .then(res => res.json())
+        .then(data => {
+          this.translationsData[lang] = data;
+        })
+        .catch(() => {
+          this.translationsData[lang] = {};
+        })
+        .finally(() => {
+          loaded++;
+          if (loaded === languages.length && callback) {
+            callback();
+          }
+        });
+    });
+
+  },
+
+  // 🔥 egen translate som RESPEKTERAR override
+  t(key) {
+
+    const globalLang = config.language || "en";
+    const lang = this.config.language || globalLang;
+
+    const langData = this.translationsData[lang];
+    const fallbackData = this.translationsData[globalLang];
+    const enData = this.translationsData["en"];
+
+    return (
+      langData?.[key] ||
+      fallbackData?.[key] ||
+      enData?.[key] ||
+      key
+    );
 
   },
 
@@ -67,7 +124,7 @@ Module.register("MMM-VinylCollection", {
     wrapper.className = "vinyl-wrapper";
 
     if (!this.stats) {
-      wrapper.innerHTML = "Laddar vinylsamling...";
+      wrapper.innerHTML = this.t("LOADING");
       return wrapper;
     }
 
@@ -103,10 +160,10 @@ Module.register("MMM-VinylCollection", {
 
     wrapper.innerHTML = `
 
-      <div class="vinyl-header">VINYLSAMLINGEN</div>
+      <div class="vinyl-header">${this.t("TITLE")}</div>
 
       <div class="vinyl-section">
-        <div class="vinyl-label">DAGENS VINYL</div>
+        <div class="vinyl-label">${this.t("TODAY")}</div>
 
         <div class="vinyl-row">
           ${todayCover ? `<img src="${todayCover}" class="vinyl-cover">` : ""}
@@ -117,9 +174,8 @@ Module.register("MMM-VinylCollection", {
         </div>
       </div>
 
-
       <div class="vinyl-section">
-        <div class="vinyl-label">SLUMPAT ALBUM</div>
+        <div class="vinyl-label">${this.t("RANDOM")}</div>
 
         <div class="vinyl-row">
           ${randomCover ? `<img src="${randomCover}" class="vinyl-cover">` : ""}
@@ -130,9 +186,8 @@ Module.register("MMM-VinylCollection", {
         </div>
       </div>
 
-
       <div class="vinyl-section">
-        <div class="vinyl-label">SENAST TILLAGD</div>
+        <div class="vinyl-label">${this.t("LATEST")}</div>
 
         <div class="vinyl-row">
           ${latestCover ? `<img src="${latestCover}" class="vinyl-cover">` : ""}
@@ -143,25 +198,23 @@ Module.register("MMM-VinylCollection", {
         </div>
       </div>
 
-
       <div class="vinyl-section">
-        <div class="vinyl-label">TOPPARTISTER</div>
+        <div class="vinyl-label">${this.t("TOP_ARTISTS")}</div>
         ${topArtistsHtml}
       </div>
 
-
       <div class="vinyl-section">
 
-        <div class="vinyl-label">STATISTIK</div>
+        <div class="vinyl-label">${this.t("STATS")}</div>
 
         <div class="vinyl-stats">
 
-          <div><span>Skivor</span><span>${this.stats.total || 0}</span></div>
-          <div><span>Artister</span><span>${this.stats.artists || 0}</span></div>
-          <div><span>Köpta i år</span><span>${this.stats.boughtThisYear || 0}</span></div>
-          <div><span>Äldsta</span><span>${this.stats.oldest || "-"}</span></div>
-          <div><span>Nyaste</span><span>${this.stats.newest || "-"}</span></div>
-          <div><span>Vanligaste genre</span><span>${this.stats.topGenre?.name || "-"}</span></div>
+          <div><span>${this.t("RECORDS")}</span><span>${this.stats.total || 0}</span></div>
+          <div><span>${this.t("ARTISTS")}</span><span>${this.stats.artists || 0}</span></div>
+          <div><span>${this.t("BOUGHT")}</span><span>${this.stats.boughtThisYear || 0}</span></div>
+          <div><span>${this.t("OLDEST")}</span><span>${this.stats.oldest || "-"}</span></div>
+          <div><span>${this.t("NEWEST")}</span><span>${this.stats.newest || "-"}</span></div>
+          <div><span>${this.t("GENRE")}</span><span>${this.stats.topGenre?.name || "-"}</span></div>
 
         </div>
 
