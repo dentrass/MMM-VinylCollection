@@ -4,6 +4,12 @@ MagicMirror² module that displays your Discogs vinyl collection with beautiful 
 
 ---
 
+## 📸 Preview
+
+![MMM-VinylCollection Screenshot](screenshot.png)
+
+---
+
 ## ✨ Features
 
 * 📀 Today's vinyl
