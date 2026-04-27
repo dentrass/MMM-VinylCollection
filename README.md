@@ -30,6 +30,7 @@ This module supports multiple languages using MagicMirror's built-in language sy
 
 * 🇸🇪 Swedish
 * 🇬🇧 English
+* 🇩🇪 German
 
 ---
 
@@ -38,7 +39,7 @@ This module supports multiple languages using MagicMirror's built-in language sy
 Set language in your main `config.js`:
 
 ```javascript
-language: "sv" // or "en"
+language: "sv" // or "en" or "de"
 ```
 
 The module will automatically follow this setting.
