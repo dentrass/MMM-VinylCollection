@@ -11,7 +11,8 @@ Module.register("MMM-VinylCollection", {
   getTranslations() {
     return {
       en: "translations/en.json",
-      sv: "translations/sv.json"
+      sv: "translations/sv.json",
+      de: "translations/de.json"
     };
   },
 
