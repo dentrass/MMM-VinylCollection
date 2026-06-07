@@ -59,7 +59,7 @@ You can force a specific language **only for this module**:
     token: "YOUR_DISCOGS_TOKEN",
     language: "en" // 🔥 overrides global language
   }
-}
+},
 ```
 
 If not set, the module falls back to MagicMirror’s global language.
